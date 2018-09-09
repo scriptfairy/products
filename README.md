@@ -7,7 +7,7 @@
 
 * Front end code is written with Vue.js
 
-## How to run the Application
+## Steps to setup the application
 
 * Follow the instructions in https://book.cakephp.org/3.0/en/quickstart.html to start a project with CakePHP.
 
