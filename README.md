@@ -1,28 +1,37 @@
-# CakePHP Application Skeleton
+# Product Management Demo
 
-[![Build Status](https://img.shields.io/travis/cakephp/app/master.svg?style=flat-square)](https://travis-ci.org/cakephp/app)
-[![Total Downloads](https://img.shields.io/packagist/dt/cakephp/app.svg?style=flat-square)](https://packagist.org/packages/cakephp/app)
 
-A skeleton for creating applications with [CakePHP](https://cakephp.org) 3.x.
+## Frameworks
 
-The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
+* Back end code is written with CakePHP 3.6
 
-## Installation
+* Front end code is written with Vue.js
 
-1. Download [Composer](https://getcomposer.org/doc/00-intro.md) or update `composer self-update`.
-2. Run `php composer.phar create-project --prefer-dist cakephp/app [app_name]`.
+## How to run the Application
 
-If Composer is installed globally, run
+* Follow the instructions in https://book.cakephp.org/3.0/en/quickstart.html to start a project with CakePHP.
 
-```bash
-composer create-project --prefer-dist cakephp/app
+* Install MySql and create a schema called brighte, create a new table:
+
+```
+CREATE TABLE `product` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(250) NOT NULL,
+  `picture` varchar(500) NOT NULL,
+  `price` decimal(10,2) DEFAULT NULL,
+  `description` varchar(1000) NOT NULL,
+  `created` datetime NOT NULL DEFAULT '1000-01-01 00:00:00',
+  `updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+
 ```
 
-In case you want to use a custom app dir name (e.g. `/myapp/`):
+* Make sure PHPUnit is installed on your machine, otherwise follow the instructions in this page:
 
-```bash
-composer create-project --prefer-dist cakephp/app myapp
-```
+https://book.cakephp.org/3.0/en/development/testing.html
+
+
 
 You can now either use your machine's webserver to view the default home page, or start
 up the built-in webserver with:
@@ -33,19 +42,41 @@ bin/cake server -p 8765
 
 Then visit `http://localhost:8765` to see the welcome page.
 
-## Update
-
-Since this skeleton is a starting point for your application and various files
-would have been modified as per your needs, there isn't a way to provide
-automated upgrades, so you have to do any updates manually.
-
 ## Configuration
 
-Read and edit `config/app.php` and setup the `'Datasources'` and any other
-configuration relevant for your application.
+Read and edit `config/app.php` and setup the `'Datasources'`
 
-## Layout
+```
+'Datasources' => [
+    'default' => [
+        'className' => 'Cake\Database\Connection',
+        'driver' => 'Cake\Database\Driver\Mysql',
+        'persistent' => false,
+        'host' => 'localhost',
+        'username' => 'brighte',
+        'password' => 'brighte',
+        'database' => 'brighte',
+        'timezone' => 'UTC',
+        'flags' => [],
+        'cacheMetadata' => true,
+        'log' => false,
+        'quoteIdentifiers' => false,
+        'url' => env('DATABASE_URL', null),
+    ],
 
-The app skeleton uses a subset of [Foundation](http://foundation.zurb.com/) (v5) CSS
-framework by default. You can, however, replace it with any other library or
-custom styles.
+```
+
+Update routes.php :
+
+```
+$routes->connect('/', ['controller' => 'Products', 'action' => 'index', 'index']);
+
+```
+
+## Test Case:
+
+To run the test case:
+
+```
+vendor/bin/phpunit -v tests/TestCase/Controller/ProductsControllerTest
+```
